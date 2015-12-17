@@ -1,0 +1,66 @@
+<h1>Welcome, <a href="/users/<%= @current_user.id %>"><%= @current_user.name %></a>! <a href="/sessions/<%= @current_user.id %>" data-method="delete">Logout</a></h1>
+
+<form action="/posts/create" method="post">
+	<h2>Create a Post: <input type="text" name="post[post]">
+		<input type="submit" value="Create">
+	</h2>
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+</form>
+
+<% @posts.reverse.each do |post| %>
+	<h3>
+		<a href="/users/<%= post.user.id %>"><%= post.user.name %></a> said "<a href="/posts/<%= post.id %>"><%= post.post %></a>" on <%= post.created_at.strftime("%B %d, %Y") %>
+		<% if post.user.id == session[:user_id] %>
+			<a href="/posts/<%= post.id %>/edit"><button class="edit">Edit</button></a>
+			<a href="/posts/<%= post.id %>" data-method="delete"><button class="delete">Delete</button></a>			
+		<% end %>
+	</h3>
+
+	<% l = post.likes.where(user: @current_user).take %>
+	<% if l.nil? %>
+		<form action="/likes/create" method="post">
+			<p><input type="submit" value="Like"> <%= post.likes.count %></p>
+			<input type="hidden" name="parent_id" value="<%= post.id %>">
+			<input type="hidden" name="parent_type" value="Post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		</form>	
+	<% else %>
+		<p><a href="/likes/<%= l.id %>" data-method="delete"><button>Unlike</button></a> <%= post.likes.count %></p>
+	<% end %>
+
+	<div class="comment">
+
+		<form action="/comments/create" method="post">
+			<h4>Create a Comment: <input type="text" name="comment[comment]">
+				<input type="submit" value="Create">
+			</h4>
+			<input type="hidden" name="comment[post_id]" value="<%= post.id %>">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		</form>
+
+		<% post.comments.reverse.each do |comment| %>
+			<p>
+				<a href="/users/<%= comment.user.id %>"><%= comment.user.name %></a> commented "<a href="/comments/<%= comment.id %>"><%= comment.comment %></a>" on <%= comment.created_at.strftime("%B %d, %Y") %>
+				<% if comment.user.id == session[:user_id] %>
+					<a href="/comments/<%= comment.id %>/edit"><button>Edit</button></a>
+					<a href="/comments/<%= comment.id %>" data-method="delete"><button>Delete</button></a>
+				<% end %>
+			</p>
+
+				<% l = comment.likes.where(user: @current_user).take %>
+				<% if l.nil? %>
+					<form action="/likes/create" method="post">
+						<p><input type="submit" value="Like"> <%= comment.likes.count %></p>
+						<input type="hidden" name="parent_id" value="<%= comment.id %>">
+						<input type="hidden" name="parent_type" value="Comment">
+						<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+					</form>					
+				<% else %>
+					<p><a href="/likes/<%= l.id %>" data-method="delete"><button>Unlike</button></a> <%= comment.likes.count %></p>
+				<% end %>
+
+		<% end %>
+
+	</div>
+
+<% end %>

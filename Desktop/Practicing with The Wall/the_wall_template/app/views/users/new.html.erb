@@ -1,0 +1,49 @@
+<h2>Registration</h2>
+
+<% if flash[:success] %>
+	<span class="success"><%= flash[:success] %></span>
+<% end %>
+
+<% if flash[:errors] %>
+	<% flash[:errors].each do |error| %>
+		<!-- <%= error %> -->
+		<p class="error"><%= error %></p>
+	<% end %>
+<% end %>
+
+<form action="/users/create" method="post">
+	<!-- <fieldset> -->
+		<!-- <legend>Registration</legend> -->
+		<p><input type="text" placeholder="Name" name="user[name]"></p>
+		<p><input type="text" placeholder="Email" name="user[email]"></p>
+		<p>Location:
+			<select name="user[location]">
+				<option></option>
+				<option>San Jose, CA</option>
+				<option>Seattle, WA</option>
+				<option>Burbank, CA</option>
+			</select>
+		</p>
+		<p><input type="password" placeholder="Password" name="user[password]"></p>
+		<p><input type="password" placeholder="Confirm Password" name="user[password_confirmation]"></p>
+		<p><input type="submit" value="Register"></p>
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<!-- </fieldset> -->
+</form>
+
+<h2>Login</h2>
+
+<% if flash[:error] %>
+	<p class="error"><%= flash[:error] %></p>
+<% end %>
+
+<form action="/sessions/create" method="post">
+	<p>Email: <input type="text" name="session[email]"></p>
+	<p>Password: <input type="password" name="session[password]"></p>
+	<p><input type="submit" value="Login"></p>
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+</form>
+
+
+
+

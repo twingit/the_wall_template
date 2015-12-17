@@ -1,0 +1,12 @@
+Editing User
+
+Things to add:
+- Add validation for Password/Confirmation
+
+What's up?
+- Location won't update...
+- Why doesn't the password show up? Bycrypt?
+
+General:
+- Is it a good idea to differentiate between errors? (e.g. :login_error vs :error?)
+- Protect the URLs from prying...

@@ -1,0 +1,8 @@
+<h1>Editing "<%= @post.post %>"</h1>
+
+<form action="/posts/<%= @post.id %>" method="post">
+	<h2>Post: <input type="text" name="post[post]" value="<%= @post.post %>"> <input type="submit" value="Update"></h2>
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+</form>
+
+<p><a href="/the_wall">Back to The Wall</a></p>

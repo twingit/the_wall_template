@@ -1,0 +1,10 @@
+<h1><%= @user.name %></h1>
+
+<p><%= @user.location %></p>
+
+<p>
+	<a href="/the_wall">Back to The Wall</a>
+	<% if @user.id == session[:user_id] %>
+		 | <a href="/users/<%= @user.id %>/edit">Edit</a>
+	<% end %>
+</p>

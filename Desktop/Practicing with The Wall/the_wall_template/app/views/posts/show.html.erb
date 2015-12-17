@@ -1,0 +1,8 @@
+<h1><%= @post.post %></h1>
+
+<p>
+	<a href="/the_wall">Back to The Wall</a>
+	<% if @post.user.id == session[:user_id] %>
+		 | <a href="/posts/<%= @post.id %>/edit">Edit Post</a>
+	<% end %>
+</p>
